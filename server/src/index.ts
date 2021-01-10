@@ -4,7 +4,9 @@ import cors from "cors";
 import photo from "./routes/photos";
 import helmet from "helmet";
 import useragent from "express-useragent";
-import { limiter } from "./middleware/rateLimiter";
+import { generalLimiter } from "./middleware/rateLimiter";
+import { userAgent } from "./middleware/userAgent";
+import { errorHandler } from "./middleware/errorHandler";
 
 //Intialize backend
 const app = express();
@@ -17,8 +19,11 @@ app.use(useragent.express());
 
 if (process.env.NODE_ENV != "development") {
   app.use(helmet());
-  app.use(limiter);
+  app.use(generalLimiter);
 }
+
+app.use(errorHandler);
+app.use(userAgent);
 //Setup routes
 
 app.use("/", photo);

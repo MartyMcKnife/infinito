@@ -4,8 +4,8 @@ import getRandom, {
 } from "../helpers/unsplash/unsplash";
 
 export type postResponse = {
-  name: string;
-  author: string;
+  name: string[];
+  author: string[];
 };
 
 export type returns = UnsplashReturn[] | UnsplashError;

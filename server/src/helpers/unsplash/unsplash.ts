@@ -21,7 +21,11 @@ const getRandom = async (number: number) => {
     const photos = data.data;
 
     const result: UnsplashReturn[] = photos.map((photo) => {
-      return { url: photo.urls.full, author: photo.user.name };
+      return {
+        url: photo.urls.full,
+        author: photo.user.name,
+        name: photo.alt_description,
+      };
     });
     return result;
   } catch (e) {

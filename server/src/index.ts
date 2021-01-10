@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import photo from "./routes/photos";
+import user from "./routes/users";
 import helmet from "helmet";
 import useragent from "express-useragent";
 import { generalLimiter } from "./middleware/rateLimiter";
@@ -27,6 +28,7 @@ app.use(userAgent);
 //Setup routes
 
 app.use("/", photo);
+app.use("/", user);
 
 //Export app
 export default app;

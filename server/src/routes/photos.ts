@@ -1,11 +1,13 @@
 import { Router, Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
 import multer from "multer";
+import { body, check, validationResult } from "express-validator";
 
 import { cloudinaryConfig, uploader } from "../helpers/cloudinary/cloudinary";
 import getRandom from "../helpers/unsplash/unsplash";
+import localRandom from "../helpers/mongodb/mongodb";
 
-import { postResponse, returns, File } from "./photos.model";
+import { postResponse, returns, File } from "./photos.shape";
 
 import { Photo } from "./../models/photo.model";
 
@@ -28,10 +30,12 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       let unsplash: returns = await getRandom(30);
+      let local = await localRandom(6);
       if ("message" in unsplash) {
         res.status(503).json(unsplash);
       } else {
-        res.json(unsplash);
+        const returnArr = [...unsplash, ...local];
+        res.status(200).json(returnArr);
       }
     } catch (e) {
       next(e);
@@ -64,9 +68,12 @@ router.post(
     }
 
     cloudinaryConfig();
+    console.log(form.author[0]);
+    console.log(form.author);
+    console.log(form);
 
     const imageUrl = await Promise.all(
-      images.map(async (image) => {
+      images.map(async (image, index) => {
         try {
           const uri =
             "data:image/jpeg;base64," + image.buffer.toString("base64");
@@ -85,13 +92,12 @@ router.post(
           //Write to MongoDB
           const newPhoto = new Photo({
             photoURL: upload.url,
-            photoAuthor: form.author,
-            photoName: form.name,
+            photoAuthor: form.author[index],
+            photoName: form.name[index],
           });
 
           await newPhoto.save();
           console.log("Photo successfully saved to database");
-          console.log(image.originalname);
           return image.originalname;
         } catch (e) {
           next(e);

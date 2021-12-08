@@ -6,6 +6,7 @@ import { Spinner } from "@chakra-ui/spinner";
 import { createStandaloneToast } from "@chakra-ui/toast";
 import Masonry from "react-masonry-css";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Loader from "./Loader";
 
 type Image = { link: string; width: number; height: number };
 
@@ -32,7 +33,7 @@ export default function ImageGrid(): ReactElement {
         title: "Error",
         description: error.message,
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
         position: "bottom-right",
       });
@@ -44,11 +45,7 @@ export default function ImageGrid(): ReactElement {
         dataLength={images.length}
         next={() => refetch({ params: { count: 10 } })}
         hasMore={true}
-        loader={
-          <Center>
-            <Spinner size="xl" thickness="4px" color="white" mt="24" mr="4" />
-          </Center>
-        }
+        loader={<Loader />}
         style={{ overflow: "hidden" }}
       >
         <Masonry

@@ -3,6 +3,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import HeadTemplate from "../components/Head";
 import Header from "../components/Header";
+import "../styles/global.css";
 
 const theme = extendTheme({
   fonts: {
@@ -17,7 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <HeadTemplate />
 
       <Box
-        w="100vw"
+        maxW="100vw"
         minH="100vh"
         bgColor="gray.900"
         px="32"

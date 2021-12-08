@@ -6,6 +6,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const count = req.query.count || 30;
   try {
     const { data } = await axios.get<Unsplash[]>(
       "https://api.unsplash.com/photos/random",
@@ -13,7 +14,7 @@ export default async function handler(
         params: {
           client_id: process.env.NEXT_PUBLIC_UNSPLASH_ACCESS,
           query: "nature", //TODO: Allow user to change this
-          count: 30,
+          count,
         },
       }
     );
@@ -21,7 +22,7 @@ export default async function handler(
     res.status(200).json(
       data.map((image) => {
         return {
-          link: image.urls.regular,
+          link: image.urls.small,
           width: image.width,
           height: image.height,
         };

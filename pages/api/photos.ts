@@ -13,7 +13,6 @@ export default async function handler(
       {
         params: {
           client_id: process.env.NEXT_PUBLIC_UNSPLASH_ACCESS,
-          query: "nature", //TODO: Allow user to change this
           count,
         },
       }

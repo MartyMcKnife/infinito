@@ -42,9 +42,9 @@ export default function Header(): ReactElement {
           </LinkOverlay>
         </LinkBox>
         <LinkBox>
-          <LinkOverlay href="/login">
+          <LinkOverlay href="/user">
             <Heading
-              borderBottom={isActive("/login") ? "2px" : "0px"}
+              borderBottom={isActive("/user") ? "2px" : "0px"}
               borderColor="white"
               fontSize="4xl"
               fontWeight="400"

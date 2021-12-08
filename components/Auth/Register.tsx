@@ -11,10 +11,9 @@ import { FirebaseError } from "@firebase/util";
 
 interface Props {
   setRegister: React.Dispatch<React.SetStateAction<boolean>>;
-  setFinish: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Login({ setRegister, setFinish }: Props): ReactElement {
+export default function Login({ setRegister }: Props): ReactElement {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -83,7 +82,6 @@ export default function Login({ setRegister, setFinish }: Props): ReactElement {
                   password
                 );
                 await createUser(user.user, username);
-                setFinish(true);
                 setLoading(false);
               } catch (error: any) {
                 const err: FirebaseError = error;

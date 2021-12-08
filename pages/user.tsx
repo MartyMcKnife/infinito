@@ -12,7 +12,6 @@ import Loader from "../components/Loader";
 
 export default function UserPage(): ReactElement {
   const [register, setRegister] = useState(false);
-  const [finishSignup, setFinishSignup] = useState(false);
 
   const [user, loading, error] = useAuthState(auth);
 
@@ -35,10 +34,10 @@ export default function UserPage(): ReactElement {
     return (
       <>
         <Header />
-        {user && finishSignup ? (
-          <User user={user} setFinish={setFinishSignup} />
+        {user ? (
+          <User user={user} />
         ) : register ? (
-          <Register setRegister={setRegister} setFinish={setFinishSignup} />
+          <Register setRegister={setRegister} />
         ) : (
           <Login setRegister={setRegister} />
         )}

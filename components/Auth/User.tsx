@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/button";
-import { Center, Heading, Text } from "@chakra-ui/layout";
+import { Box, Center, Heading, Text } from "@chakra-ui/layout";
 import { User } from "@firebase/auth";
 import React, { ReactElement, useEffect } from "react";
 import { signOut } from "firebase/auth";
@@ -14,10 +14,9 @@ import { useToast } from "@chakra-ui/toast";
 
 interface Props {
   user: User;
-  setFinish: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function UserInfo({ user, setFinish }: Props): ReactElement {
+export default function UserInfo({ user }: Props): ReactElement {
   const [value, loading, error] = useDocumentData(doc(userColl, user.uid));
 
   const toast = useToast();
@@ -40,22 +39,15 @@ export default function UserInfo({ user, setFinish }: Props): ReactElement {
     return <Loader />;
   } else {
     return (
-      <>
+      <Box mt="6">
         <Heading>
           Hello,{" "}
           <Text fontWeight="400" display="inline" as="i">
             {value?.username}!
           </Text>
         </Heading>
-        <Button
-          onClick={() => {
-            signOut(auth);
-            setFinish(false);
-          }}
-        >
-          Signout
-        </Button>
-      </>
+        <Button onClick={() => signOut(auth)}>Signout</Button>
+      </Box>
     );
   }
 }

@@ -2,14 +2,18 @@ import React, { ReactElement, useEffect, useState } from "react";
 import Login from "../components/Auth/Login";
 import Register from "../components/Auth/Register";
 import Header from "../components/Header";
+import User from "../components/Auth/User";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebase/app";
 import { useToast } from "@chakra-ui/toast";
 import { Center } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
+import Loader from "../components/Loader";
 
-export default function User(): ReactElement {
+export default function UserPage(): ReactElement {
   const [register, setRegister] = useState(false);
+  const [finishSignup, setFinishSignup] = useState(false);
+
   const [user, loading, error] = useAuthState(auth);
 
   const toast = useToast();
@@ -31,18 +35,16 @@ export default function User(): ReactElement {
     return (
       <>
         <Header />
-        {register ? (
-          <Register setRegister={setRegister} />
+        {user && finishSignup ? (
+          <User user={user} setFinish={setFinishSignup} />
+        ) : register ? (
+          <Register setRegister={setRegister} setFinish={setFinishSignup} />
         ) : (
           <Login setRegister={setRegister} />
         )}
       </>
     );
   } else {
-    return (
-      <Center>
-        <Spinner size="xl" thickness="4px" color="white" mt="24" mr="4" />
-      </Center>
-    );
+    return <Loader />;
   }
 }

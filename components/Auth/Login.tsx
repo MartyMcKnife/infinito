@@ -42,7 +42,9 @@ export default function Login({ setRegister }: Props): ReactElement {
             placeholder="Email"
             size="lg"
             value={email}
+            type="email"
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <Input
             placeholder="Password"
@@ -50,9 +52,10 @@ export default function Login({ setRegister }: Props): ReactElement {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type="password"
+            required
           />
           <Text fontSize="xl">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link textDecoration="underline" onClick={() => setRegister(true)}>
               Register
             </Link>{" "}

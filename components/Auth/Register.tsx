@@ -3,27 +3,30 @@ import { Center, Heading, Link, Text } from "@chakra-ui/layout";
 import { Input } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
 import { VStack, ScaleFade } from "@chakra-ui/react";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase/app";
 import { useToast } from "@chakra-ui/toast";
+import { createUser } from "../../utils/firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { FirebaseError } from "@firebase/util";
 
 interface Props {
   setRegister: React.Dispatch<React.SetStateAction<boolean>>;
+  setFinish: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Login({ setRegister }: Props): ReactElement {
+export default function Login({ setRegister, setFinish }: Props): ReactElement {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(auth);
-
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const toast = useToast();
 
   useEffect(() => {
     if (error) {
       toast({
         title: "Something went wrong",
-        description: error.message,
+        description: error,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -39,10 +42,20 @@ export default function Login({ setRegister }: Props): ReactElement {
             Register
           </Heading>
           <Input
+            placeholder="Username"
+            size="lg"
+            value={username}
+            type="text"
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <Input
             placeholder="Email"
             size="lg"
             value={email}
+            type="email"
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <Input
             placeholder="Password"
@@ -50,6 +63,7 @@ export default function Login({ setRegister }: Props): ReactElement {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type="password"
+            required
           />
           <Text fontSize="xl">
             Already have an account?{" "}
@@ -60,7 +74,23 @@ export default function Login({ setRegister }: Props): ReactElement {
           <Button
             size="lg"
             colorScheme="whiteAlpha"
-            onClick={() => createUserWithEmailAndPassword(email, password)}
+            onClick={async () => {
+              setLoading(true);
+              try {
+                const user = await createUserWithEmailAndPassword(
+                  auth,
+                  email,
+                  password
+                );
+                await createUser(user.user, username);
+                setFinish(true);
+                setLoading(false);
+              } catch (error: any) {
+                const err: FirebaseError = error;
+                setError(err.message);
+                setLoading(false);
+              }
+            }}
             isLoading={loading}
             loadingText="Loading"
           >

@@ -2,7 +2,6 @@ import type { AppProps } from "next/app";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import HeadTemplate from "../components/Head";
-import Header from "../components/Header";
 import "../styles/global.css";
 
 const theme = extendTheme({

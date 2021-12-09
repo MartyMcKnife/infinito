@@ -20,16 +20,15 @@ interface Props {
 }
 
 export default function UserInfo({ user }: Props): ReactElement {
+  // Get user info
   const [value, loading, error] = useDocumentData<IUser>(
     doc(userColl, user.uid)
   );
 
   const toast = useToast();
-  const id = "image-grid-toast";
   useEffect(() => {
     if (error) {
       toast({
-        id,
         title: "Error",
         description: error.message,
         status: "error",
@@ -38,7 +37,7 @@ export default function UserInfo({ user }: Props): ReactElement {
         position: "bottom-right",
       });
     }
-  }, [error, toast, id]);
+  }, [error, toast]);
 
   const breakpointColumnsObj = {
     default: 4,
@@ -47,6 +46,7 @@ export default function UserInfo({ user }: Props): ReactElement {
     900: 1,
   };
 
+  // If there's nothing, display a loader
   if (loading || !value) {
     return <Loader />;
   } else {
@@ -76,7 +76,7 @@ export default function UserInfo({ user }: Props): ReactElement {
         >
           Your Photos
         </Heading>
-
+        {/* Only display photos if we have some */}
         {value.photos.length > 0 ? (
           <Box mt="6">
             <Masonry

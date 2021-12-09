@@ -50,6 +50,7 @@ export default function ImageGrid(): ReactElement {
     <Box mt="4" overflowY="hidden">
       <InfiniteScroll
         dataLength={images.length}
+        //Refetch on scroll, with slightly less images
         next={() => refetch({ params: { count: 10 } })}
         hasMore={true}
         loader={<Loader />}

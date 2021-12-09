@@ -13,6 +13,7 @@ export function removeFile(files: DropFile[], id: string) {
 }
 
 export const uploadFile = async (file: DropFile, userID: string) => {
+  //Check if image contains nudity
   tf.enableProdMode();
 
   const model = await nsfwjs.load();
@@ -22,7 +23,7 @@ export const uploadFile = async (file: DropFile, userID: string) => {
   if (predictions[0].className !== "Neutral") {
     throw new Error("File is not safe for work");
   }
-
+  //Upload to cloudinary
   const data = new FormData();
   data.append("file", file);
   data.append("upload_preset", "qa4futgg");
@@ -34,6 +35,7 @@ export const uploadFile = async (file: DropFile, userID: string) => {
     )
   ).data;
 
+  //Add file to firestore
   await updateDoc(doc(db, "users", userID), {
     photos: arrayUnion({
       link: upload.url,

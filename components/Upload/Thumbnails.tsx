@@ -27,6 +27,7 @@ export default function Thumbnails({
           borderRadius="lg"
           objectFit="cover"
           mr="auto"
+          //We give the image an ID, so that we can check if it contains NSFW material
           id={file.id}
         />
         <Text mx="auto">{file.name}</Text>

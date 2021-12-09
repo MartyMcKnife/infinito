@@ -18,6 +18,7 @@ interface Props {
 }
 
 export default function Drop({ user }: Props): ReactElement {
+  //Initialize state and dropzone
   const [files, setFiles] = useState<DropFile[]>([]);
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: "image/*",
@@ -80,7 +81,6 @@ export default function Drop({ user }: Props): ReactElement {
       setSuccess(false);
     }
   }, [error, toast]);
-  console.log(files);
   return (
     <>
       {files.length > 0 ? (
@@ -90,6 +90,7 @@ export default function Drop({ user }: Props): ReactElement {
           </Heading>
           <VStack>{thumbs}</VStack>
           <Center>
+            {/* This is button, that's actually a dropzone, to avoid writing a lot of code */}
             <Box {...getRootProps()}>
               <input {...getInputProps()} />
               <Button

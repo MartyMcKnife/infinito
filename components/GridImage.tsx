@@ -23,7 +23,7 @@ export default function GridImage({
       textAlign="center"
       textColor="white"
       _hover={{
-        // Transition the image slightly bigger on hover, with a darkened background
+        // Transition the image slightly bigger on hover, with a darkened background - display author
         transform: "scale(1.05)",
         bg: "gray.700",
         opacity: 0.9,

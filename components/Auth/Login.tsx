@@ -17,6 +17,7 @@ export default function Login({ setRegister }: Props): ReactElement {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
 
+  //Login error handler
   const toast = useToast();
 
   useEffect(() => {

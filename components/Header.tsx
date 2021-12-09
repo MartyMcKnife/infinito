@@ -63,6 +63,7 @@ export default function Header(): ReactElement {
                 fontSize={{ base: "xl", md: "2xl", lg: "4xl" }}
                 fontWeight="400"
               >
+                {/* Display Login or Dashboard depending if logged in */}
                 {user ? "Dashboard" : "Login"}
               </Heading>
             </LinkOverlay>

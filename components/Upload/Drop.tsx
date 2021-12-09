@@ -9,6 +9,8 @@ import { useToast } from "@chakra-ui/toast";
 import { BiImages, BiPlusCircle } from "react-icons/bi";
 import Thumbnails from "./Thumbnails";
 import { User } from "@firebase/auth";
+import axios from "axios";
+import { uploadFile } from "../../utils/upload";
 
 interface Props {
   user: User;
@@ -21,6 +23,7 @@ export default function Drop({ user }: Props): ReactElement {
   });
   const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
   const toast = useToast();
 
   //Process images to generate preview
@@ -61,6 +64,21 @@ export default function Drop({ user }: Props): ReactElement {
     }
   }, [success, toast]);
 
+  //Error popoup if something goes wrong
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong, please try again",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+      setSuccess(false);
+    }
+  }, [error, toast]);
+  console.log(files);
   return (
     <>
       {files.length > 0 ? (
@@ -88,9 +106,19 @@ export default function Drop({ user }: Props): ReactElement {
               mt="4"
               onClick={async () => {
                 setUploading(true);
-                files.forEach(async (file) => {});
-                setUploading(false);
+                try {
+                  await Promise.all(
+                    files.map(async (file) => {
+                      await uploadFile(file, user.uid);
+                    })
+                  );
+                  setSuccess(true);
+                } catch (error) {
+                  console.log(error);
+                  setError(true);
+                }
                 setFiles([]);
+                setUploading(false);
               }}
               isLoading={uploading}
               loadingText="Uploading..."

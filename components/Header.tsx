@@ -1,6 +1,12 @@
 import React, { ReactElement } from "react";
 import { useRouter } from "next/router";
-import { HStack, Heading, Link, LinkOverlay, LinkBox } from "@chakra-ui/layout";
+import {
+  HStack,
+  Heading,
+  Stack,
+  LinkOverlay,
+  LinkBox,
+} from "@chakra-ui/layout";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebase/app";
 
@@ -12,22 +18,25 @@ export default function Header(): ReactElement {
   const [user, loading, error] = useAuthState(auth);
 
   return (
-    <HStack
+    <Stack
       borderBottom="4px"
       borderColor="white"
       justifyContent="space-between"
       alignItems="center"
       pb="4"
+      direction={["column", "row"]}
     >
-      <Heading fontSize="6xl">infinito</Heading>
+      <Heading fontSize={{ base: "2xl", md: "4xl", lg: "6xl" }}>
+        infinito
+      </Heading>
       {!loading && (
-        <HStack spacing="16">
+        <HStack spacing={["4", "8", "16"]}>
           <LinkBox>
             <LinkOverlay href="/">
               <Heading
                 borderBottom={isActive("/") ? "2px" : "0px"}
                 borderColor="white"
-                fontSize="4xl"
+                fontSize={{ base: "xl", md: "2xl", lg: "4xl" }}
                 fontWeight="400"
               >
                 Home
@@ -39,7 +48,7 @@ export default function Header(): ReactElement {
               <Heading
                 borderBottom={isActive("/add") ? "2px" : "0px"}
                 borderColor="white"
-                fontSize="4xl"
+                fontSize={{ base: "xl", md: "2xl", lg: "4xl" }}
                 fontWeight="400"
               >
                 Add
@@ -51,15 +60,16 @@ export default function Header(): ReactElement {
               <Heading
                 borderBottom={isActive("/user") ? "2px" : "0px"}
                 borderColor="white"
-                fontSize="4xl"
+                fontSize={{ base: "xl", md: "2xl", lg: "4xl" }}
                 fontWeight="400"
               >
+                {/* Display Login or Dashboard depending if logged in */}
                 {user ? "Dashboard" : "Login"}
               </Heading>
             </LinkOverlay>
           </LinkBox>
         </HStack>
       )}
-    </HStack>
+    </Stack>
   );
 }

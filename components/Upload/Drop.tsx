@@ -11,19 +11,22 @@ import Thumbnails from "./Thumbnails";
 import { User } from "@firebase/auth";
 import axios from "axios";
 import { uploadFile } from "../../utils/upload";
+import { Checkbox, FormLabel, InputGroup } from "@chakra-ui/react";
 
 interface Props {
   user: User;
 }
 
 export default function Drop({ user }: Props): ReactElement {
+  //Initialize state and dropzone
   const [files, setFiles] = useState<DropFile[]>([]);
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: "image/*",
   });
   const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
+  const [consent, setConsent] = useState(false);
   const toast = useToast();
 
   //Process images to generate preview
@@ -69,7 +72,7 @@ export default function Drop({ user }: Props): ReactElement {
     if (error) {
       toast({
         title: "Error",
-        description: "Something went wrong, please try again",
+        description: error,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -78,16 +81,16 @@ export default function Drop({ user }: Props): ReactElement {
       setSuccess(false);
     }
   }, [error, toast]);
-  console.log(files);
   return (
     <>
       {files.length > 0 ? (
         <>
-          <Heading mt="16" ml="8">
+          <Heading mt="16" ml={["0", "4", "8"]}>
             Your Photos
           </Heading>
           <VStack>{thumbs}</VStack>
           <Center>
+            {/* This is button, that's actually a dropzone, to avoid writing a lot of code */}
             <Box {...getRootProps()}>
               <input {...getInputProps()} />
               <Button
@@ -100,11 +103,21 @@ export default function Drop({ user }: Props): ReactElement {
               </Button>
             </Box>
           </Center>
+
+          <Checkbox isChecked={consent} onChange={() => setConsent(!consent)}>
+            I consent that I own the rights to these images, and infinito is
+            allowed to use them.
+          </Checkbox>
+
           <Flex w="full" justifyContent="flex-end" mr="8" mb="4">
             <Button
               colorScheme="green"
               mt="4"
               onClick={async () => {
+                if (!consent) {
+                  setError("Please provide consent!");
+                  return;
+                }
                 setUploading(true);
                 try {
                   await Promise.all(
@@ -113,9 +126,9 @@ export default function Drop({ user }: Props): ReactElement {
                     })
                   );
                   setSuccess(true);
-                } catch (error) {
+                } catch (error: any) {
                   console.log(error);
-                  setError(true);
+                  setError(error.message);
                 }
                 setFiles([]);
                 setUploading(false);
@@ -133,8 +146,8 @@ export default function Drop({ user }: Props): ReactElement {
             <Box
               {...getRootProps()}
               bgColor="gray.800"
-              py="28"
-              px="52"
+              py={["14", "28"]}
+              px={["12", "24", "52"]}
               borderStyle="dotted"
               border="2px"
               borderRadius="xl"
@@ -143,7 +156,7 @@ export default function Drop({ user }: Props): ReactElement {
               <Center>
                 <BiImages size="100" />
               </Center>
-              <Text mt="4">
+              <Text mt="4" textAlign="center">
                 Drag &apos;n&apos; drop some files here, or click to select
                 files
               </Text>

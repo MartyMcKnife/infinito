@@ -10,6 +10,8 @@ import {
 import { db } from "./app";
 import { User as IUser } from "../../interfaces/firestore";
 
+//Allow typescript stuff on returned DB documents
+
 const createCollection = <T = DocumentData>(collectionName: string) => {
   return collection(db, collectionName) as CollectionReference<T>;
 };

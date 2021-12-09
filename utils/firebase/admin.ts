@@ -2,6 +2,7 @@ import admin from "firebase-admin";
 import { CollectionReference, DocumentData } from "firebase/firestore";
 
 //From: https://dev.to/digitalplayer1125/using-firebase-admin-with-nextjs-j6e
+// This is so the backend can update the DB
 
 try {
   admin.initializeApp({

@@ -8,6 +8,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // Get some photos from unsplash
   const count = parseInt((req.query.count as string) || "30", 10);
   try {
     const { data } = await axios.get<Unsplash[]>(
@@ -54,7 +55,7 @@ export default async function handler(
 
     //Combine all photos from the unsplash api and the firestore collection, only if the count is more than 20
     //Also randomize the order of the photos at the same time
-    //Only add a random amount of firestore photos to the combination
+    //Only add 15 of the firestore photos to the combination
     const photos =
       count > 20
         ? [

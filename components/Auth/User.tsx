@@ -13,22 +13,22 @@ import { BiImages } from "react-icons/bi";
 import { User as IUser } from "../../interfaces/firestore";
 import { Image } from "@chakra-ui/react";
 import GridImage from "../GridImage";
+import Masonry from "react-masonry-css";
 
 interface Props {
   user: User;
 }
 
 export default function UserInfo({ user }: Props): ReactElement {
+  // Get user info
   const [value, loading, error] = useDocumentData<IUser>(
     doc(userColl, user.uid)
   );
 
   const toast = useToast();
-  const id = "image-grid-toast";
   useEffect(() => {
     if (error) {
       toast({
-        id,
         title: "Error",
         description: error.message,
         status: "error",
@@ -37,16 +37,24 @@ export default function UserInfo({ user }: Props): ReactElement {
         position: "bottom-right",
       });
     }
-  }, [error, toast, id]);
+  }, [error, toast]);
 
+  const breakpointColumnsObj = {
+    default: 4,
+    1600: 3,
+    1200: 2,
+    900: 1,
+  };
+
+  // If there's nothing, display a loader
   if (loading || !value) {
     return <Loader />;
   } else {
     return (
       <Box mt="6">
-        <HStack spacing="6" alignItems="center">
+        <HStack justifyContent="space-between" alignItems="center">
           {" "}
-          <Heading fontSize="5xl">
+          <Heading fontSize={{ base: "xl", md: "3xl", lg: "5xl" }}>
             Hello,{" "}
             <Text fontWeight="400" display="inline" as="i">
               {value.username}!
@@ -62,11 +70,20 @@ export default function UserInfo({ user }: Props): ReactElement {
             Sign Out
           </Button>
         </HStack>
-        <Heading mt="12">Your Photos</Heading>
-        {/* Display the users photos. If they don't have any photos, show an error messsage */}
-        <Center mt="20">
-          {value.photos.length > 0 ? (
-            <VStack mb="16">
+        <Heading
+          mt={["4", "12"]}
+          fontSize={{ base: "lg", md: "2xl", lg: "4xl" }}
+        >
+          Your Photos
+        </Heading>
+        {/* Only display photos if we have some */}
+        {value.photos.length > 0 ? (
+          <Box mt="6">
+            <Masonry
+              breakpointCols={breakpointColumnsObj}
+              className="grid"
+              columnClassName="column"
+            >
               {value.photos.map((photo) => {
                 return (
                   <GridImage
@@ -74,19 +91,20 @@ export default function UserInfo({ user }: Props): ReactElement {
                     src={photo.link}
                     alt={photo.name}
                     author={value.username}
+                    size="16rem"
                   />
                 );
               })}
-            </VStack>
-          ) : (
-            <VStack>
-              <BiImages size="150" />
-              <Heading fontWeight="400" fontSize="3xl">
-                D&apos;oh. Looks like you haven&apos;t added any photos!
-              </Heading>
-            </VStack>
-          )}
-        </Center>
+            </Masonry>
+          </Box>
+        ) : (
+          <VStack w="full" mt="20" justifyContent="center">
+            <BiImages size="150" />
+            <Heading fontWeight="400" fontSize="3xl">
+              D&apos;oh. Looks like you haven&apos;t added any photos!
+            </Heading>
+          </VStack>
+        )}
       </Box>
     );
   }

@@ -83,7 +83,7 @@ export default function Drop({ user }: Props): ReactElement {
     <>
       {files.length > 0 ? (
         <>
-          <Heading mt="16" ml="8">
+          <Heading mt="16" ml={["0", "4", "8"]}>
             Your Photos
           </Heading>
           <VStack>{thumbs}</VStack>

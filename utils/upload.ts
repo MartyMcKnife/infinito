@@ -27,6 +27,8 @@ export const uploadFile = async (file: DropFile, userID: string) => {
       link: upload.url,
       id: file.id,
       name: file.name,
+      width: upload.width,
+      height: upload.height,
     }),
   });
 };

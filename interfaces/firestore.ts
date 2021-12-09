@@ -8,4 +8,6 @@ interface Photos {
   id: string;
   name: string;
   link: string;
+  width: number;
+  height: number;
 }

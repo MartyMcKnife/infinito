@@ -1,13 +1,13 @@
 /* CSS for Masonry Grid */
 
-.my-masonry-grid {
+.grid {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin-left: -30px;
   width: auto;
+  margin-top: 0.5rem;
 }
-.my-masonry-grid_column {
-  padding-left: 15px;
-  background-clip: padding-box;
+
+.column {
+  margin: 0 15px;
 }

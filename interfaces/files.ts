@@ -3,6 +3,15 @@ export interface DropFile extends File {
   preview: string;
 }
 
+export interface Image {
+  link: string;
+  width: number;
+  height: number;
+  id: string;
+  name: string;
+  author: string;
+}
+
 export interface Cloudinary {
   asset_id: string;
   public_id: string;

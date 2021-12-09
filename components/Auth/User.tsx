@@ -12,6 +12,7 @@ import { useToast } from "@chakra-ui/toast";
 import { BiImages } from "react-icons/bi";
 import { User as IUser } from "../../interfaces/firestore";
 import { Image } from "@chakra-ui/react";
+import GridImage from "../GridImage";
 
 interface Props {
   user: User;
@@ -65,18 +66,18 @@ export default function UserInfo({ user }: Props): ReactElement {
         {/* Display the users photos. If they don't have any photos, show an error messsage */}
         <Center mt="20">
           {value.photos.length > 0 ? (
-            <HStack overflowX="auto">
+            <VStack mb="16">
               {value.photos.map((photo) => {
                 return (
-                  <Image
-                    rounded="lg"
+                  <GridImage
+                    key={photo.id}
                     src={photo.link}
                     alt={photo.name}
-                    key={photo.id}
+                    author={value.username}
                   />
                 );
               })}
-            </HStack>
+            </VStack>
           ) : (
             <VStack>
               <BiImages size="150" />

@@ -37,6 +37,15 @@ export default function ImageGrid(): ReactElement {
       });
     }
   }, [error, toast, id]);
+
+  //Responsive Grid
+  const breakpointColumnsObj = {
+    default: 4,
+    1600: 3,
+    1200: 2,
+    900: 1,
+  };
+
   return (
     <Box mt="4" overflowY="hidden">
       <InfiniteScroll
@@ -46,7 +55,11 @@ export default function ImageGrid(): ReactElement {
         loader={<Loader />}
         style={{ overflow: "hidden" }}
       >
-        <Masonry breakpointCols={3} className="grid" columnClassName="column">
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="grid"
+          columnClassName="column"
+        >
           {images.map((photo) => (
             <GridImage
               key={photo.id}

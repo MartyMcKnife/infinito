@@ -133,8 +133,8 @@ export default function Drop({ user }: Props): ReactElement {
             <Box
               {...getRootProps()}
               bgColor="gray.800"
-              py="28"
-              px="52"
+              py={["14", "28"]}
+              px={["12", "24", "52"]}
               borderStyle="dotted"
               border="2px"
               borderRadius="xl"
@@ -143,7 +143,7 @@ export default function Drop({ user }: Props): ReactElement {
               <Center>
                 <BiImages size="100" />
               </Center>
-              <Text mt="4">
+              <Text mt="4" textAlign="center">
                 Drag &apos;n&apos; drop some files here, or click to select
                 files
               </Text>

@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         maxW="100vw"
         minH="100vh"
         bgColor="gray.900"
-        px="32"
+        px={["4", "8", "16", "32"]}
         pt="8"
         textColor="white"
       >

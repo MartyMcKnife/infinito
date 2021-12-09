@@ -72,7 +72,8 @@ export default function Login({ setRegister }: Props): ReactElement {
           </Text>
           <Button
             size="lg"
-            colorScheme="whiteAlpha"
+            colorScheme="white"
+            variant="outline"
             onClick={async () => {
               setLoading(true);
               try {
@@ -82,7 +83,6 @@ export default function Login({ setRegister }: Props): ReactElement {
                   password
                 );
                 await createUser(user.user, username);
-                setLoading(false);
               } catch (error: any) {
                 const err: FirebaseError = error;
                 setError(err.message);

@@ -62,7 +62,8 @@ export default function Login({ setRegister }: Props): ReactElement {
           </Text>
           <Button
             size="lg"
-            colorScheme="whiteAlpha"
+            colorScheme="white"
+            variant="outline"
             onClick={() => signInWithEmailAndPassword(email, password)}
             isLoading={loading}
             loadingText="Loading"

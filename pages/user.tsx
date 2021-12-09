@@ -29,7 +29,6 @@ export default function UserPage(): ReactElement {
       });
     }
   }, [error, toast]);
-
   if (!loading) {
     return (
       <>

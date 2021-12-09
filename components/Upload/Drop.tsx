@@ -125,9 +125,9 @@ export default function Drop({ user }: Props): ReactElement {
                     })
                   );
                   setSuccess(true);
-                } catch (error) {
+                } catch (error: any) {
                   console.log(error);
-                  setError("Something went wrong. Please try again later");
+                  setError(error.message);
                 }
                 setFiles([]);
                 setUploading(false);

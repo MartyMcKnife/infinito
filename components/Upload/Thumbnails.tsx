@@ -27,6 +27,7 @@ export default function Thumbnails({
           borderRadius="lg"
           objectFit="cover"
           mr="auto"
+          id={file.id}
         />
         <Text mx="auto">{file.name}</Text>
         <BiTrashAlt

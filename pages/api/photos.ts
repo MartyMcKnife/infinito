@@ -24,6 +24,8 @@ export default async function handler(
           link: image.urls.small,
           width: image.width,
           height: image.height,
+          author: image.user.name,
+          name: image.description,
         };
       })
     );

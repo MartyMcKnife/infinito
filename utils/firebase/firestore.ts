@@ -5,6 +5,7 @@ import {
   DocumentData,
   setDoc,
   doc,
+  getDoc,
 } from "@firebase/firestore";
 import { db } from "./app";
 import { User as IUser } from "../../interfaces/firestore";
@@ -21,4 +22,9 @@ export const createUser = async (user: User, username: string) => {
     userID: user.uid,
     photos: [],
   });
+};
+
+export const getUser = async (user: User) => {
+  const document = await getDoc(doc(db, "users", user.uid));
+  return document.data() as IUser;
 };

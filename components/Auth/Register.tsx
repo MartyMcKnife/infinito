@@ -83,7 +83,6 @@ export default function Login({ setRegister }: Props): ReactElement {
                   password
                 );
                 await createUser(user.user, username);
-                setLoading(false);
               } catch (error: any) {
                 const err: FirebaseError = error;
                 setError(err.message);

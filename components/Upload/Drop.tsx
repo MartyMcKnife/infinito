@@ -11,6 +11,7 @@ import Thumbnails from "./Thumbnails";
 import { User } from "@firebase/auth";
 import axios from "axios";
 import { uploadFile } from "../../utils/upload";
+import { Checkbox, FormLabel, InputGroup } from "@chakra-ui/react";
 
 interface Props {
   user: User;
@@ -23,7 +24,8 @@ export default function Drop({ user }: Props): ReactElement {
   });
   const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
+  const [consent, setConsent] = useState(false);
   const toast = useToast();
 
   //Process images to generate preview
@@ -69,7 +71,7 @@ export default function Drop({ user }: Props): ReactElement {
     if (error) {
       toast({
         title: "Error",
-        description: "Something went wrong, please try again",
+        description: error,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -100,11 +102,21 @@ export default function Drop({ user }: Props): ReactElement {
               </Button>
             </Box>
           </Center>
+
+          <Checkbox isChecked={consent} onChange={() => setConsent(!consent)}>
+            I consent that I own the rights to these images, and infinito is
+            allowed to use them.
+          </Checkbox>
+
           <Flex w="full" justifyContent="flex-end" mr="8" mb="4">
             <Button
               colorScheme="green"
               mt="4"
               onClick={async () => {
+                if (!consent) {
+                  setError("Please provide consent!");
+                  return;
+                }
                 setUploading(true);
                 try {
                   await Promise.all(
@@ -115,7 +127,7 @@ export default function Drop({ user }: Props): ReactElement {
                   setSuccess(true);
                 } catch (error) {
                   console.log(error);
-                  setError(true);
+                  setError("Something went wrong. Please try again later");
                 }
                 setFiles([]);
                 setUploading(false);
